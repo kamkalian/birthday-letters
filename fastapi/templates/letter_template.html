@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geburtstagsbrief</title>
+    <style>
+        * { margin: 0; padding: 0; }
+        html, body {
+            font-family: Verdana, sans-serif;
+            font-size: 22px;
+        }
+        .page{
+            width: 220mm;
+            height: 297mm;
+            position: relative;
+            margin: 25mm;
+        }
+        .header {
+            font-size: 60%;
+            position: absolute;
+            top: 45mm;  /* Position im Fensterbereich */
+            width: 100mm;
+        }
+        .address {
+            position: absolute;
+            top: 52mm;  /* Position im Fensterbereich */
+            width: 100mm;
+        }
+        .date {
+            position:absolute;
+            top: 115mm;
+            right: 0;
+        }
+        .salutation {
+            font-weight: bold;
+            position: absolute;
+            top: 125mm;
+        }
+        .after-salutation-text{
+            position: absolute;
+            top: 140mm;
+            min-width: 160mm;
+        }
+        .poem {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20mm;
+            margin-bottom: 20mm;
+        }
+        .watermark-image{
+            position: absolute;
+            top: 110mm;
+        }
+        .watermark-image img{
+            width: 800px;
+        }
+        .closing {
+            margin-top: 10mm;
+            margin-bottom: 20mm;
+        }
+        .signature {
+            margin-top: 5mm;
+            margin-bottom: 2mm;
+        }
+        .page-break { page-break-after: always; }
+
+        /* Faltmarken */
+        .fold-mark {
+            position: absolute;
+            width: 10mm;
+            border-top: 1px solid #aaa;
+            left: -25mm;
+        }
+        .fold-mark.top {
+            top: 110mm; /* Position für obere Faltmarke (Mitte des Briefs) */
+        }
+        img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Faltmarken -->
+        <div class="fold-mark top">
+            <span class="fold-mark-label"></span>
+        </div>
+
+        <!-- Absender -->
+        <div class="header">
+            AWO Oberlar e. V. • Sieglarer Str. 66-68 • 53842 Troisdorf
+        </div>
+        
+        <!-- Empfängeradresse -->
+        <div class="address">
+            {{ row.Anrede }}<br>
+            {{ row.Vorname }} {{ row.Nachname }}<br>
+            {{ row.Straße }}<br>
+            {{ row.Postleitzahl }} {{ row.Ort }}
+        </div>
+        
+        <!-- Wasserzeichen -->
+        <div class="watermark-image">
+            <img src="data:image/png;base64,{{ watermark_image }}">
+        </div>
+        
+        <!-- Logo -->
+        <div style="text-align: right;">
+            <img src="data:image/png;base64,{{ logo_image }}" style="width:300px;">
+        </div>
+
+        <!-- Ort und Datum -->
+        <div class="date">
+            Troisdorf, {{ row.Geburtsdatum.strftime('%d.%m.') if row.Geburtsdatum else 'Datum' }}{{ year }}
+        </div>
+        
+
+        <!-- Anrede und Haupttext -->
+        <div class="salutation">
+            {{ row.Briefanrede }},
+        </div>
+        <div class="after-salutation-text">
+            wir wünschen {{ salutation_list[1] }} alles Gute zum Geburtstag. Möge {{ salutation_list[1] }} das neue Lebensjahr Glück, 
+            Gesundheit sowie viele schöne Momente bringen!
+            <!-- Gedicht -->
+            <div class="poem">
+                Voll Fröhlichkeit und Sonnenschein<br>
+                soll heute {{ salutation_list[2] }} Geburtstag sein.<br>
+                Und außerdem sei wunderbar,<br>
+                {{ salutation_list[2] }} weiteres neues Lebensjahr!
+            </div> 
+            <!-- Geschenkinformation -->
+            <p>
+                Als kleines Geburtstagsgeschenk {{ salutation_list[0] }} gegen Vorlage dieses Schreibens in unserem 
+                Sonntagscafe {{ salutation_list[3] }} „Geburtstagskuchen + Kaffee".
+            </p>
+
+            <div class="closing">
+                <p><strong>Ein schönes und vor allem gesundes neues Lebensjahr</strong></p>
+                
+            </div>
+            <p>
+                wünscht herzlichst<br>
+                <div class="signature">
+                    <img src="data:image/png;base64,{{ signature_image }}" style="width:140px">
+                </div>
+                Birgit Biegel<br>
+                Vorsitzende
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+<div class="{% if not last_page %} page-break {% endif %}"></div>
