@@ -39,7 +39,7 @@ async def create_upload_file(data: DataModel):
     signature_image = image_to_base64("static/images/signature.png")
 
     # Excel-Datei einlesen
-    df = pd.read_csv(data.file_path, encoding="cp1252", header=0, delimiter=";")
+    df = pd.read_csv(data.file_path, encoding="utf-8", header=0, delimiter=";")
     df["Geburtsdatum"] = pd.to_datetime(df["Geburtsdatum"], format='%d.%m.%Y')
 
     # Template laden
