@@ -5,6 +5,7 @@ export default function FileUploader() {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
   const [isDragging, setIsDragging] = useState(false);
+  const [letterYear, setLetterYear] = useState(currentYear);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +20,7 @@ export default function FileUploader() {
         method: 'POST',
         headers: {
           'X-File-Name': file.name,
+          'X-Letter-Year': String(letterYear),
         },
         body: file,
       });
@@ -86,11 +88,14 @@ export default function FileUploader() {
       </div>
       
       <div className='year-input'>
-        <select className='year-select'
+              <select
+                className='year-select'
           disabled={uploading}
+                value={letterYear}
+                onChange={(e) => setLetterYear(Number(e.target.value))}
         >
-          <option>2025</option>
-          <option>2026</option>
+                <option value={currentYear}>{currentYear}</option>
+                <option value={currentYear + 1}>{currentYear + 1}</option>
         </select>
       </div>
 

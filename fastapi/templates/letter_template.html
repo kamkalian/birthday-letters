@@ -113,7 +113,7 @@
 
         <!-- Ort und Datum -->
         <div class="date">
-            Troisdorf, {{ row.Geburtsdatum.strftime('%d.%m.') if row.Geburtsdatum else 'Datum' }}{{ year }}
+            Troisdorf, {% if row.GeburtsdatumInJahr %}{{ row.GeburtsdatumInJahr.strftime('%d.%m.%Y') }}{% elif row.Geburtsdatum %}{{ row.Geburtsdatum.strftime('%d.%m.') }}{{ year }}{% else %}Datum{% endif %}
         </div>
         
 

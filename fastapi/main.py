@@ -20,6 +20,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 class DataModel(BaseModel):
     file_path: str
+    year: Optional[int] = None
 
 def salutation_list(briefanrede: str):
     if any(word in briefanrede for word in ["Liebe Frau", "Lieber Herr"]):
@@ -47,8 +48,8 @@ async def create_upload_file(data: DataModel):
 
     all_html = ""
     total_rows = len(df)
-    year = datetime.now().year
-    
+    year = data.year or datetime.now().year
+
     for index, row in df.iterrows():
         last_page = False
         if index == len(df) - 1:
