@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const buffer = Buffer.concat(chunks);
 
     // Temporären Dateinamen erstellen
-    const tempFileName = `upload_${Date.now()}${path.extname(req.headers['x-file-name'] || '.tmp')}`;
+  const tempFileName = `upload_${Date.now()}${path.extname(req.headers['x-file-name'] || '.tmp')}`;
     const uploadPath = path.join(process.cwd(), 'uploads', tempFileName);
 
     // Upload-Verzeichnis sicherstellen
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({'file_path': uploadPath}),
+      body: JSON.stringify({ file_path: uploadPath, year: req.headers['x-letter-year'] ? Number(req.headers['x-letter-year']) : undefined }),
     });
 
     if (!fastApiResponse.ok) {
