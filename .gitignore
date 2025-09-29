@@ -3,3 +3,5 @@
 *.pyc
 node_modules
 uploads
+.vscode
+fastapi/output.pdf
